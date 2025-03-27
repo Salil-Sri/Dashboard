@@ -38,7 +38,7 @@ export default function AuthForm() {
   const router = useRouter()
   const { toast } = useToast()
 
-  // Check if user is already logged in
+ 
   useEffect(() => {
     const user = localStorage.getItem("user")
     if (user) {

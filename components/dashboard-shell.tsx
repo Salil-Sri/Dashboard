@@ -1,27 +1,32 @@
-"use client"
+"use client";
 
-import type React from "react"
-
-import { useEffect } from "react"
-import { useRouter } from "next/navigation"
-import { SidebarProvider } from "@/components/sidebar-provider"
-import { DashboardSidebar } from "@/components/dashboard-sidebar"
-import { DashboardHeader } from "@/components/dashboard-header"
+import type React from "react";
+import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
+import { SidebarProvider } from "@/components/sidebar-provider";
+import { DashboardSidebar } from "@/components/dashboard-sidebar";
+import { DashboardHeader } from "@/components/dashboard-header";
 
 interface DashboardShellProps {
-  children: React.ReactNode
+  children: React.ReactNode;
 }
 
 export function DashboardShell({ children }: DashboardShellProps) {
-  const router = useRouter()
+  const router = useRouter();
+  const [isClient, setIsClient] = useState(false);
 
-  // Check if user is logged in
   useEffect(() => {
-    const user = localStorage.getItem("user")
-    if (!user) {
-      router.push("/")
+    setIsClient(true);
+
+    if (typeof window !== "undefined") {
+      const user = localStorage.getItem("user");
+      if (!user) {
+        router.replace("/");
+      }
     }
-  }, [router])
+  }, []);
+
+  if (!isClient) return null; 
 
   return (
     <SidebarProvider>
@@ -33,6 +38,5 @@ export function DashboardShell({ children }: DashboardShellProps) {
         </div>
       </div>
     </SidebarProvider>
-  )
+  );
 }
-

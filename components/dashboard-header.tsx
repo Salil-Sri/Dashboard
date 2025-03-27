@@ -1,10 +1,10 @@
-"use client"
+"use client";
 
-import { useState } from "react"
-import { useRouter } from "next/navigation"
-import Link from "next/link"
-import { User, LogOut, Trash2 } from "lucide-react"
-import { Button } from "@/components/ui/button"
+import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
+import Link from "next/link";
+import { User, LogOut, Trash2 } from "lucide-react";
+import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -12,7 +12,7 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
+} from "@/components/ui/dropdown-menu";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -22,51 +22,55 @@ import {
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
-} from "@/components/ui/alert-dialog"
-import { useToast } from "@/hooks/use-toast"
-import { SidebarTrigger } from "@/components/sidebar-provider"
+} from "@/components/ui/alert-dialog";
+import { useToast } from "@/hooks/use-toast";
+import { SidebarTrigger } from "@/components/sidebar-provider";
 
 export function DashboardHeader() {
-  const router = useRouter()
-  const { toast } = useToast()
-  const [showDeleteDialog, setShowDeleteDialog] = useState(false)
-  const [userData, setUserData] = useState<{ name: string; email: string } | null>(null)
+  const router = useRouter();
+  const { toast } = useToast();
+  const [showDeleteDialog, setShowDeleteDialog] = useState(false);
+  const [userData, setUserData] = useState<{ name: string; email: string } | null>(null);
 
-  // Get user data from localStorage
-  useState(() => {
-    const user = localStorage.getItem("user")
-    if (user) {
-      setUserData(JSON.parse(user))
+  
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const user = localStorage.getItem("user");
+      if (user) {
+        setUserData(JSON.parse(user));
+      }
     }
-  })
+  }, []);
 
   const handleLogout = () => {
-    localStorage.removeItem("user")
+    localStorage.removeItem("user");
     toast({
       title: "Logged out",
       description: "You have been logged out successfully",
-    })
-    router.push("/")
-  }
+    });
+    router.push("/");
+  };
 
   const handleDeleteAccount = () => {
-    const user = JSON.parse(localStorage.getItem("user") || "{}")
-    const users = JSON.parse(localStorage.getItem("users") || "[]")
+    if (typeof window !== "undefined") {
+      const user = JSON.parse(localStorage.getItem("user") || "{}");
+      const users = JSON.parse(localStorage.getItem("users") || "[]");
 
-    // Remove user from users array
-    const updatedUsers = users.filter((u: any) => u.email !== user.email)
-    localStorage.setItem("users", JSON.stringify(updatedUsers))
+     
+      const updatedUsers = users.filter((u: any) => u.email !== user.email);
+      localStorage.setItem("users", JSON.stringify(updatedUsers));
 
-    // Remove user session
-    localStorage.removeItem("user")
+  
+      localStorage.removeItem("user");
 
-    toast({
-      title: "Account deleted",
-      description: "Your account has been deleted successfully",
-    })
+      toast({
+        title: "Account deleted",
+        description: "Your account has been deleted successfully",
+      });
 
-    router.push("/")
-  }
+      router.push("/");
+    }
+  };
 
   return (
     <header className="sticky top-0 z-40 border-b bg-background">
@@ -128,6 +132,5 @@ export function DashboardHeader() {
         </AlertDialogContent>
       </AlertDialog>
     </header>
-  )
+  );
 }
-

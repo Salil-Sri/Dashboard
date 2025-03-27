@@ -1,8 +1,7 @@
 import AuthForm from "@/components/auth-form"
 
 export default function Home() {
-  // In a real app, we would check server-side if the user is authenticated
-  // For this demo, we'll use client-side redirection in the AuthForm component
+ 
 
   return (
     <div className="flex min-h-screen flex-col items-center justify-center bg-background">

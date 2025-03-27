@@ -17,7 +17,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { Button } from "@/components/ui/button"
 import { mockData } from "@/lib/mock-data"
 
-// Define the data type
+
 type Person = {
   id: string
   name: string
@@ -27,7 +27,7 @@ type Person = {
   lastActive: string
 }
 
-// Define the columns
+
 const columns: ColumnDef<Person>[] = [
   {
     accessorKey: "name",
